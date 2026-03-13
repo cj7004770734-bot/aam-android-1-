@@ -10,28 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Download and extract Android project
+        run: |
+          curl -L "https://4a791485-f203-4c8c-abfa-8e8c9848cc3c-00-2z0h44kurk4fs.riker.replit.dev/api/download/aam-android" -o aam-android.tar.gz
+          tar -xzf aam-android.tar.gz --strip-components=2
+          ls -la
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Set up Gradle wrapper
-        run: |
-          mkdir -p gradle/wrapper
-          curl -L "https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar" -o gradle/wrapper/gradle-wrapper.jar
-          cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
-          distributionBase=GRADLE_USER_HOME
-          distributionPath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
-          networkTimeout=10000
-          validateDistributionUrl=true
-          zipStoreBase=GRADLE_USER_HOME
-          zipStorePath=wrapper/dists
-          EOF
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
